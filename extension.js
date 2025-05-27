@@ -1,9 +1,9 @@
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import { Indicator } from './src/models/indicator.js';
-import { debug } from './src/utils/log.js';
+import { logger } from './src/utils/logger.js';
 
-export default class GnomeNightLightSliderExtension extends Extension {
+export default class NightLightSliderGnomeExtension extends Extension {
   constructor(metadata) {
     super(metadata);
     this._indicator = null;
@@ -11,7 +11,7 @@ export default class GnomeNightLightSliderExtension extends Extension {
 
   // Enable the extension
   enable() {
-    debug('Extension enabled');
+    logger.debug('Extension enabled');
     if (!this._indicator) {
       this._indicator = new Indicator();
     }
@@ -19,7 +19,7 @@ export default class GnomeNightLightSliderExtension extends Extension {
 
   // Disable the extension
   disable() {
-    debug('Extension disabled');
+    logger.debug('Extension disabled');
     if (this._indicator) {
       this._indicator.destroy();
       this._indicator = null;

@@ -3,6 +3,7 @@
   "description": "Add a slider for Night Light temperature to the Quick Settings menu.",
   "url": "https://github.com/kyleabaker/gnome-night-light-slider",
   "uuid": "gnome-night-light-slider@kyleabaker.github.com",
-  "version": 2,
-  "shell-version": ["45", "46", "47", "48"]
+  "settings-schema": "org.gnome.shell.extensions.com.github.kyleabaker.gnome-night-light-slider",
+  "shell-version": ["45", "46", "47", "48"],
+  "version": 1
 }
