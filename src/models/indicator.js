@@ -1,3 +1,28 @@
+/*
+ * GNOME Night Light Slider for GNOME Shell
+ *
+ * Copyright (C) 2025
+ *     Kyle Baker <https://github.com/kyleabaker/gnome-night-light-slider>
+ *
+ * This file is part of the gnome-shell extension gnome-night-light-slider.
+ *
+ * gnome-shell extension gnome-night-light-slider is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * gnome-shell extension gnome-night-light-slider is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gnome-shell extension gnome-night-light-slider.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+'use strict';
+
 import GObject from 'gi://GObject';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -13,6 +38,8 @@ export const Indicator = GObject.registerClass(
   class Indicator extends SystemIndicator {
     _init() {
       super._init();
+
+      this.ENABLE_LOGGING = true; //TODO pull from settings instead of static
 
       const item = new NightLightItem();
       this.quickSettingsItems.push(item);
@@ -32,23 +59,34 @@ export const Indicator = GObject.registerClass(
           brightnessIndex >= 0 ? items[brightnessIndex + 1] : null;
 
         if (brightnessItem && nextItem) {
-          logger.debug('Adding Night Light slider after Brightness slider.');
+          logger.debug(
+            this.ENABLE_LOGGING,
+            'Adding Night Light slider after Brightness slider.'
+          );
           quickSettings.menu.insertItemBefore(item, nextItem, colSpan);
         } else {
           // Attempt to find the Volume slider
           const volumeItem = quickSettings._volume?.quickSettingsItems?.[0];
           if (volumeItem) {
-            logger.debug('Adding Night Light slider after Volume slider.');
+            logger.debug(
+              this.ENABLE_LOGGING,
+              'Adding Night Light slider after Volume slider.'
+            );
             quickSettings.menu.insertItemAfter(item, volumeItem, colSpan);
           } else {
             logger.debug(
+              this.ENABLE_LOGGING,
               'Adding Night Light slider at bottom of Quick Settings.'
             );
             quickSettings.addExternalIndicator(this, colSpan);
           }
         }
       } catch (error) {
-        logger.error('Failed to insert Night Light slider.', error);
+        logger.error(
+          this.ENABLE_LOGGING,
+          'Failed to insert Night Light slider.',
+          error
+        );
         quickSettings.addExternalIndicator(this, colSpan);
       }
     }

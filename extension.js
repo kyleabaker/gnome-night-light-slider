@@ -1,3 +1,28 @@
+/*
+ * GNOME Night Light Slider for GNOME Shell
+ *
+ * Copyright (C) 2025
+ *     Kyle Baker <https://github.com/kyleabaker/gnome-night-light-slider>
+ *
+ * This file is part of the gnome-shell extension gnome-night-light-slider.
+ *
+ * gnome-shell extension gnome-night-light-slider is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * gnome-shell extension gnome-night-light-slider is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gnome-shell extension gnome-night-light-slider.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+'use strict';
+
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import { Indicator } from './src/models/indicator.js';
@@ -7,11 +32,12 @@ export default class NightLightSliderGnomeExtension extends Extension {
   constructor(metadata) {
     super(metadata);
     this._indicator = null;
+    this.ENABLE_LOGGING = true; //TODO pull from settings instead of static
   }
 
   // Enable the extension
   enable() {
-    logger.debug('Extension enabled');
+    logger.debug(this.ENABLE_LOGGING, 'Extension enabled');
     if (!this._indicator) {
       this._indicator = new Indicator();
     }
@@ -19,7 +45,7 @@ export default class NightLightSliderGnomeExtension extends Extension {
 
   // Disable the extension
   disable() {
-    logger.debug('Extension disabled');
+    logger.debug(this.ENABLE_LOGGING, 'Extension disabled');
     if (this._indicator) {
       this._indicator.destroy();
       this._indicator = null;

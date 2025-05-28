@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schemalist>
+  <schema
+    id="org.gnome.shell.extensions.com.github.kyleabaker.gnome-night-light-slider"
+    path="/org/gnome/shell/extensions/com/github/kyleabaker/gnome-night-light-slider/"
+  >
+    <key type="b" name="enable-logging">
+      <default>false</default>
+      <summary>Enable Logging</summary>
+      <description>Enable logging for debugging.</description>
+    </key>
+  </schema>
+</schemalist>

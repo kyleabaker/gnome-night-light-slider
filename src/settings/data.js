@@ -23,31 +23,23 @@
  */
 'use strict';
 
-const PREFIX = '[GnomeNightLightSlider]';
+/**
+ * Create the settings data object for the extension preferences window
+ *
+ * @param {*} settings
+ * @returns settings data object
+ */
+export function createSettingsData(settings) {
+  const booleanKeys = [['ENABLE_LOGGING', 'enable-logging']];
 
-export const logger = {
-  log: (isEnabled, message) => {
-    if (!isEnabled) return;
-    console.log(`${PREFIX} ${message}`);
-  },
+  const data = {};
 
-  debug: (isEnabled, message) => {
-    if (!isEnabled) return;
-    console.debug(`${PREFIX} ${message}`);
-  },
+  for (const [prop, key] of booleanKeys) {
+    data[prop] = {
+      get: () => settings.get_boolean(key),
+      set: (v) => settings.set_boolean(key, v),
+    };
+  }
 
-  info: (isEnabled, message) => {
-    if (!isEnabled) return;
-    console.info(`${PREFIX} ${message}`);
-  },
-
-  warn: (isEnabled, message) => {
-    if (!isEnabled) return;
-    console.warn(`${PREFIX} ${message}`);
-  },
-
-  error: (isEnabled, message, exception = null) => {
-    if (!isEnabled) return;
-    console.error(`${PREFIX} ${message}:\n${exception}`);
-  },
-};
+  return data;
+}
