@@ -25,7 +25,6 @@ link coming soon – pending GNOME's approval! 🚀
    ```
 
 3. **Restart GNOME**:
-
    - On Xorg: Press 'Alt + F2', type 'r' and press 'Enter'.
    - On Wayland: Log Out and log back in.
 
