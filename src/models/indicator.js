@@ -48,38 +48,29 @@ export const Indicator = GObject.registerClass(
       const colSpan = 2;
 
       try {
-        // Retrieve all current items in the Quick Settings grid
-        const items = quickSettings.menu._grid.get_children();
-
         // Attempt to find the Brightness slider
         const brightnessItem =
           quickSettings._brightness?.quickSettingsItems?.[0];
-        const brightnessIndex = items.indexOf(brightnessItem);
-        const nextItem =
-          brightnessIndex >= 0 ? items[brightnessIndex + 1] : null;
+        const volumeItem = quickSettings._volume?.quickSettingsItems?.[0];
 
-        if (brightnessItem && nextItem) {
+        if (brightnessItem?.visible) {
+          // Insert right after Brightness
           logger.debug(
             this.ENABLE_LOGGING,
-            'Adding Night Light slider after Brightness slider.'
+            'Adding Night Light Slider right after Brightness in Quick Settings.'
           );
-          quickSettings.menu.insertItemBefore(item, nextItem, colSpan);
+          quickSettings.insertItemAfter(item, brightnessItem, colSpan);
+        } else if (volumeItem?.visible) {
+          // Insert right after Volume
+          logger.debug(
+            this.ENABLE_LOGGING,
+            'Adding Night Light Slider right after Volume in Quick Settings.'
+          );
+          quickSettings.insertItemAfter(item, volumeItem, colSpan);
         } else {
-          // Attempt to find the Volume slider
-          const volumeItem = quickSettings._volume?.quickSettingsItems?.[0];
-          if (volumeItem) {
-            logger.debug(
-              this.ENABLE_LOGGING,
-              'Adding Night Light slider after Volume slider.'
-            );
-            quickSettings.menu.insertItemAfter(item, volumeItem, colSpan);
-          } else {
-            logger.debug(
-              this.ENABLE_LOGGING,
-              'Adding Night Light slider at bottom of Quick Settings.'
-            );
-            quickSettings.addExternalIndicator(this, colSpan);
-          }
+          throw new Error(
+            'Adding Night Light slider at bottom of Quick Settings.'
+          );
         }
       } catch (error) {
         logger.error(
