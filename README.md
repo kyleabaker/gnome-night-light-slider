@@ -1,6 +1,7 @@
 # Night Light Slider
 
-[![Build and Release Extension](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/release.yml/badge.svg)](https://github.com/kyleabaker/gnome-night-light-slider/actions)
+[![Build and Release Extension](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/release.yaml/badge.svg)](https://github.com/kyleabaker/gnome-night-light-slider/actions)
+![CI Status](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/ci.yaml/badge.svg)
 [![Latest Release](https://img.shields.io/github/v/release/kyleabaker/gnome-night-light-slider)](https://github.com/kyleabaker/gnome-night-light-slider/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
