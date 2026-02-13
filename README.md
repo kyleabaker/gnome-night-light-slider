@@ -4,57 +4,101 @@
 
 ![Quick Settings Preview](assets/quick-settings-screenshot.png)
 
-## Installation
+### Quick Install (One-Liner)
 
-### From the GNOME Extensions Store
+If you have `curl` and `jq` installed, you can install the latest release directly without cloning the repository:
 
-link coming soon – pending GNOME's approval! 🚀
+```bash
+curl -s https://api.github.com/repos/kyleabaker/gnome-wobbly-windows/releases/latest \
+| jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url' \
+| xargs curl -L -o extension.zip \
+&& gnome-extensions install --force extension.zip \
+&& rm extension.zip
+```
 
-### Manual method
+> **Note:** After running this, you must **restart GNOME Shell** (Alt+F2, type `r`, Enter) or log out/in for the extension to appear in your list. Then, enable it via the "Extensions" app.
 
-1. **Clone this repository or download the files**:
-
-   ```bash
-   git clone https://github.com/devoscarm/night-light-slider.git
-   ```
-
-2. **Copy the files to the GNOME extensions directory**:
-
-   ```bash
-   cp -r night-light-slider ~/.local/share/gnome-shell/extensions/night-light-slider@devoscarm.github.com
-   ```
-
-3. **Restart GNOME**:
-   - On Xorg: Press 'Alt + F2', type 'r' and press 'Enter'.
-   - On Wayland: Log Out and log back in.
-
-4. **Enable the extension**:
-
-   Use GNOME Tweaks or run the following command:
-
-   ```bash
-   gnome-extensions enable night-light-slider@devoscarm.github.com
-   ```
-
-## Contributions
+### Contributions
 
 Got ideas, suggestions, or found a bug?  
 [Open an issue on GitHub](https://github.com/devoscarm/night-light-slider/issues) or submit a **pull request**.
 
+### Build from Source
+
+To build and install this extension from source, ensure you have the standard build utilities and GNOME development tools installed.
+
+#### 1. Install Build Tools
+
+- **Ubuntu/Debian:** `sudo apt install build-essential libglib2.0-bin zip jq npm`
+- **Fedora:** `sudo dnf install make gcc glib2 zip jq npm`
+- **Arch:** `sudo pacman -S base-devel glib2 zip jq npm`
+
+#### 2. Compilation & Installation
+
+Run these commands from the project root directory:
+
+- **Build the package:** Creates a distributable `.zip` file in the `dist/` folder.
+  ```bash
+  make -f tools/Makefile
+  ```
+- **Install locally:** Compiles schemas and deploys the extension to your local GNOME folder.
+  ```bash
+  make -f tools/Makefile install
+  ```
+
+#### 3. Activate the Extension
+
+GNOME requires a session refresh to detect new local extensions:
+
+- **Xorg:** Press `Alt` + `F2`, type `r`, and press `Enter`.
+- **Wayland:** Log out and log back in.
+- **Enable:** Use the **Extensions** app or run:
+  ```bash
+  gnome-extensions enable gnome-wobbly-windows@kyleabaker.github.com
+  ```
+
+### Release Process
+
+To share a new version on the GitHub Releases tab:
+
+1.  **Update Version:** Increment the `version` field in `metadata.json`.
+2.  **Generate Bundle:** Run `make -f tools/Makefile` to generate the latest `.zip` in the `dist/` directory.
+3.  **Publish on GitHub:**
+    - Navigate to **Releases** > **Draft a new release**.
+    - Tag the version (e.g., `v1.0.0`).
+    - Upload the `.zip` file located in the `dist/` folder.
+    - Click **Publish release**.
+
+### Automated Release Process
+
+This project uses GitHub Actions to automate the creation of releases. When you are ready to publish a new version, follow these steps:
+
+1. **Update Version:** Increment the `version` field in `metadata.json` (and ensure your changes are committed).
+2. **Tag the Release:** Create a new git tag and push it to GitHub.
+
+```bash
+# Replace v1.0.1 with your new version number
+git add .
+git commit -m "Update to version 1.0.1"
+git tag v1.0.1
+git push origin main --tags
+```
+
+3. **Automated Build:** GitHub Actions will automatically:
+   - Detect the new tag.
+   - Install build dependencies and run the `Makefile`.
+   - Generate the extension bundle.
+   - Create a new GitHub Release with the `.zip` file attached as a downloadable asset.
+
+4. **Verify:** After about 60 seconds, check your **Releases** tab on GitHub to see the new version and its compiled extension package.
+
+## Troubleshooting
+
+In case of update error please restart GNOME Shell via:
+
+- **Xorg:** Press `Alt` + `F2`, type `r`, and press `Enter`.
+- **Wayland:** Log out and log back in.
+
 ## License
 
-This project is released under the **GNU General Public License v3.0**.
-For full details, see the [LICENSE](LICENSE) file.
-
-## Acknowledgments
-
-I'm thrilled to share my first GNOME extension and contribute to the amazing FOSS world!
-This project wouldn't have been possible without the incredible open-source community, which
-has taught me so much over the years.
-
-I'd like to extend my gratitude to the communities of **Ubuntu**, **Debian**, and **GNOME** for
-their invaluable forums, documentation and discussions. Your knowledge, generosity, and passion
-continue to be a source of inspiration.
-
-To all open-source contributors out there - **thank you for making technology accessible,
-transparent, and truly collaborative!** 🚀
+This extension is distributed under the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
