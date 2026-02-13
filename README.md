@@ -1,5 +1,9 @@
 # Night Light Slider
 
+[![Build and Release Extension](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/release.yml/badge.svg)](https://github.com/kyleabaker/gnome-night-light-slider/actions)
+[![Latest Release](https://img.shields.io/github/v/release/kyleabaker/gnome-night-light-slider)](https://github.com/kyleabaker/gnome-night-light-slider/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 **Night Light Slider** is a GNOME extension that adds a slider to the quick settings panel, allowing you to easily adjust the color temperature of Night Light mode without diving into the Settings app.
 
 ![Quick Settings Preview](assets/quick-settings-screenshot.png)
@@ -9,7 +13,7 @@
 If you have `curl` and `jq` installed, you can install the latest release directly without cloning the repository:
 
 ```bash
-curl -s https://api.github.com/repos/kyleabaker/gnome-wobbly-windows/releases/latest \
+curl -s https://api.github.com/repos/kyleabaker/gnome-night-light-slider/releases/latest \
 | jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url' \
 | xargs curl -L -o extension.zip \
 && gnome-extensions install --force extension.zip \
@@ -21,7 +25,7 @@ curl -s https://api.github.com/repos/kyleabaker/gnome-wobbly-windows/releases/la
 ### Contributions
 
 Got ideas, suggestions, or found a bug?  
-[Open an issue on GitHub](https://github.com/devoscarm/night-light-slider/issues) or submit a **pull request**.
+[Open an issue on GitHub](https://github.com/kyleabaker/night-light-slider/issues) or submit a **pull request**.
 
 ### Build from Source
 
@@ -54,7 +58,7 @@ GNOME requires a session refresh to detect new local extensions:
 - **Wayland:** Log out and log back in.
 - **Enable:** Use the **Extensions** app or run:
   ```bash
-  gnome-extensions enable gnome-wobbly-windows@kyleabaker.github.com
+  gnome-extensions enable gnome-night-light-slider@kyleabaker.github.com
   ```
 
 ### Release Process
