@@ -1,4 +1,4 @@
-# Night Light Slider
+# Night Light Slider for GNOME Shell
 
 [![Build and Release Extension](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/release.yaml/badge.svg)](https://github.com/kyleabaker/gnome-night-light-slider/actions)
 ![CI Status](https://github.com/kyleabaker/gnome-night-light-slider/actions/workflows/ci.yaml/badge.svg)
