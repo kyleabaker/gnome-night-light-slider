@@ -23,15 +23,27 @@
  */
 'use strict';
 
+import Gio from 'gi://Gio'; // eslint-disable-line no-unused-vars
+
+/**
+ * @typedef {Object} SettingItem
+ * @property {() => any} get
+ * @property {(v: any) => void} set
+ */
+
+/** @typedef {Object.<string, SettingItem>} SettingsData */
+
 /**
  * Create the settings data object for the extension preferences window
  *
- * @param {*} settings
- * @returns settings data object
+ * @param {Gio.Settings} settings
+ * @returns {SettingsData} settings data object
  */
 export function createSettingsData(settings) {
+  /** @type {[string, string][]} */
   const booleanKeys = [['ENABLE_LOGGING', 'enable-logging']];
 
+  /** @type {SettingsData} */
   const data = {};
 
   for (const [prop, key] of booleanKeys) {

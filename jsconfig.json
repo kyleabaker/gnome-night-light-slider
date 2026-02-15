@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "checkJs": true,
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "gi://*": ["node_modules/@girs/*"],
+      "gi://Adw": ["node_modules/@girs/adw-1"],
+      "gi://Gtk": ["node_modules/@girs/gtk-4"],
+      "resource:///org/gnome/shell/*": ["node_modules/@girs/gnome-shell/dist/*"]
+    }
+  },
+  "exclude": ["node_modules", ".git"]
+}
