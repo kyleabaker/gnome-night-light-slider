@@ -23,21 +23,37 @@
  */
 'use strict';
 
+/** @typedef {import('gi://St')} St */
+/** @typedef {import('gi://Gio')} Gio */
+/** @typedef {import('gi://Shell')} Shell */
+
 /**
  * Utility class for temperature normalization and denormalization
  */
 export class Temperature {
+  /** @type {number} */
   static MIN_TEMP = 1700;
+  /** @type {number} */
   static MAX_TEMP = 4700;
 
-  // Normalize temperature to a value between 0 and 1
+  /**
+   * Normalize temperature to a value between 0 and 1
+   *
+   * @param {number} temp
+   * @returns {number}
+   */
   static normalize(temp) {
     //TODO add settings to invert slider behavior
     // return 1 - (temp - this.MIN_TEMP) / (this.MAX_TEMP - this.MIN_TEMP);
     return (temp - this.MIN_TEMP) / (this.MAX_TEMP - this.MIN_TEMP);
   }
 
-  // Denormalize value between 0 and 1 to actual temperature
+  /**
+   * Denormalize value between 0 and 1 to actual temperature
+   *
+   * @param {number} value
+   * @returns {number}
+   */
   static denormalize(value) {
     //TODO add settings to invert slider behavior
     // return Math.round(

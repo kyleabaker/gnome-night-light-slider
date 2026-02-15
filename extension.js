@@ -28,14 +28,38 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { Indicator } from './src/models/indicator.js';
 import { logger } from './src/utils/logger.js';
 
+/** @typedef {import('gi://St')} St */
+/** @typedef {import('gi://Gio')} Gio */
+/** @typedef {import('gi://Shell')} Shell */
+
+/**
+ * The metadata object for the extension, from metadata.json.
+ * @typedef {object} ExtensionMetadata
+ * @property {string} uuid
+ * @property {string} path
+ * @property {string} name
+ * @property {string} description
+ * @property {string} [url]
+ * @property {string} [gettext-domain]
+ * @property {string[]} shell-version
+ * @property {number} [version]
+ */
+
 export default class NightLightSliderGnomeExtension extends Extension {
+  /**
+   * @param {ExtensionMetadata} metadata
+   */
   constructor(metadata) {
     super(metadata);
+    /** @type {InstanceType<typeof Indicator>|null} */
     this._indicator = null;
+    /** @type {boolean} */
     this.ENABLE_LOGGING = true; //TODO pull from settings instead of static
   }
 
-  // Enable the extension
+  /**
+   * Enable the extension
+   */
   enable() {
     logger.debug(this.ENABLE_LOGGING, 'Extension enabled');
     if (!this._indicator) {
@@ -43,7 +67,9 @@ export default class NightLightSliderGnomeExtension extends Extension {
     }
   }
 
-  // Disable the extension
+  /**
+   * Disable the extension
+   */
   disable() {
     logger.debug(this.ENABLE_LOGGING, 'Extension disabled');
     if (this._indicator) {

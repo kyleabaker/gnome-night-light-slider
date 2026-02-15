@@ -35,18 +35,26 @@ const COLOR_SCHEMA = 'org.gnome.settings-daemon.plugins.color';
 const TEMPERATURE_KEY = 'night-light-temperature';
 const ENABLE_KEY = 'night-light-enabled';
 
+/** @typedef {import('gi://Gio')} Gio */
+/** @typedef {import('gi://St')} St */
+
 /**
  * Class representing the Night Light slider item
  */
 export const NightLightItem = GObject.registerClass(
   class NightLightItem extends QuickSlider {
+    /**
+     * Initialize the slider item
+     */
     _init() {
       super._init({ iconName: ICON_NAME });
 
       // Store signal handler IDs for proper disconnection
+      /** @type {number[]} */
       this._connections = [];
 
       // Initialize GSettings for color schema
+      /** @type {Gio.Settings} */
       this._settings = new Gio.Settings({ schema_id: COLOR_SCHEMA });
 
       // Update visibility based on current settings
@@ -78,29 +86,37 @@ export const NightLightItem = GObject.registerClass(
       this._sync();
     }
 
-    // Update visibility of the slider based on 'night-light-enabled' setting
+    /**
+     * Update visibility of the slider based on 'night-light-enabled' setting
+     */
     _updateVisibility() {
       const enabled = this._settings.get_boolean(ENABLE_KEY);
       this.visible = enabled;
     }
 
-    // Handler for slider value changes
+    /**
+     * Handler for slider value changes
+     */
     _onSliderChanged() {
       const value = this.slider.value;
       const temperature = Temperature.denormalize(value);
       this._settings.set_uint(TEMPERATURE_KEY, temperature);
     }
 
-    // Synchronize slider position with current temperature setting
+    /**
+     * Synchronize slider position with current temperature setting
+     */
     _sync() {
       const temperature = this._settings.get_uint(TEMPERATURE_KEY);
       const value = Temperature.normalize(temperature);
       this.slider.value = value;
     }
 
-    // Disconnect all signal handlers and destroy the slider
+    /**
+     * Disconnect all signal handlers and destroy the slider
+     */
     destroy() {
-      this._connections.forEach((id) => {
+      this._connections?.forEach((id) => {
         if (id) {
           this._settings.disconnect(id);
         }

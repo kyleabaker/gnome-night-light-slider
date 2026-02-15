@@ -30,6 +30,12 @@ import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/
 
 import { createSettingsData } from './src/settings/data.js';
 
+/** @typedef {import('gi://Adw')} Adw */
+/** @typedef {import('gi://Gtk')} Gtk */
+/** @typedef {import('gi://GObject')} GObject */
+/** @typedef {import('./src/settings/data.js').SettingsData} SettingsData */
+/** @typedef {import('./src/settings/data.js').SettingItem} SettingItem */
+
 /**
  * Preferences window for GNOME Night Light Slider
  */
@@ -37,9 +43,9 @@ export default class Prefs extends ExtensionPreferences {
   /**
    * Fill preferences window
    *
-   * @param {Gtk.Window} window
+   * @param {Adw.PreferencesWindow} window
    */
-  fillPreferencesWindow(window) {
+  async fillPreferencesWindow(window) {
     const settingsData = createSettingsData(this.getSettings());
 
     const width = 750;
@@ -67,8 +73,8 @@ export default class Prefs extends ExtensionPreferences {
   /**
    * Add reset button
    *
-   * @param {Gtk.Window} window
-   * @param {Object} settingsData
+   * @param {Adw.PreferencesWindow} window
+   * @param {SettingsData} settingsData
    */
   addResetButton(window, settingsData) {
     const button = new Gtk.Button({ vexpand: true, valign: Gtk.Align.END });
@@ -77,7 +83,7 @@ export default class Prefs extends ExtensionPreferences {
     button.connect('clicked', () => {
       settingsData.ENABLE_LOGGING.set(false);
 
-      this.enableLoggingSwitch.set_value(settingsData.ENABLE_LOGGING.get());
+      this.enableLoggingSwitch.set_active(settingsData.ENABLE_LOGGING.get());
     });
 
     const header = this.findWidgetByType(window.get_content(), Adw.HeaderBar);
@@ -91,7 +97,7 @@ export default class Prefs extends ExtensionPreferences {
    *
    * @param {Adw.PreferencesGroup} group
    * @param {string} labelText
-   * @param {Object} settingsData
+   * @param {SettingItem} settingsData
    * @param {number} lower
    * @param {number} upper
    * @param {number} decimalDigits
@@ -128,8 +134,8 @@ export default class Prefs extends ExtensionPreferences {
    *
    * @param {Adw.PreferencesGroup} group
    * @param {string} labelText
-   * @param {Object} settingsData
-   * @param {Object} values
+   * @param {SettingItem} settingsData
+   * @param {string[]} values
    */
   addComboBox(group, labelText, settingsData, values) {
     const combo = new Gtk.ComboBoxText({
@@ -161,7 +167,7 @@ export default class Prefs extends ExtensionPreferences {
    *
    * @param {Adw.PreferencesGroup} group
    * @param {string} labelText
-   * @param {Object} settingsData
+   * @param {SettingItem} settingsData
    */
   addBooleanSwitch(group, labelText, settingsData) {
     const gtkSwitch = new Gtk.Switch({ hexpand: true, halign: Gtk.Align.END });
@@ -186,8 +192,8 @@ export default class Prefs extends ExtensionPreferences {
   /**
    * Find widget by type
    *
-   * @param {object} parent
-   * @param {object} type
+   * @param {Gtk.Widget} parent
+   * @param {Function} type
    */
   findWidgetByType(parent, type) {
     for (const child of [...parent]) {

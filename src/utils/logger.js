@@ -23,29 +23,58 @@
  */
 'use strict';
 
+/** @typedef {import('gi://St')} St */
+/** @typedef {import('gi://Gio')} Gio */
+/** @typedef {import('gi://Shell')} Shell */
+
+/** @type {string} */
 const PREFIX = '[GnomeNightLightSlider]';
 
+/**
+ * Logger utility object
+ */
 export const logger = {
+  /**
+   * @param {boolean} isEnabled
+   * @param {string} message
+   */
   log: (isEnabled, message) => {
     if (!isEnabled) return;
     console.log(`${PREFIX} ${message}`);
   },
 
+  /**
+   * @param {boolean} isEnabled
+   * @param {string} message
+   */
   debug: (isEnabled, message) => {
     if (!isEnabled) return;
     console.debug(`${PREFIX} ${message}`);
   },
 
+  /**
+   * @param {boolean} isEnabled
+   * @param {string} message
+   */
   info: (isEnabled, message) => {
     if (!isEnabled) return;
     console.info(`${PREFIX} ${message}`);
   },
 
+  /**
+   * @param {boolean} isEnabled
+   * @param {string} message
+   */
   warn: (isEnabled, message) => {
     if (!isEnabled) return;
     console.warn(`${PREFIX} ${message}`);
   },
 
+  /**
+   * @param {boolean} isEnabled
+   * @param {string} message
+   * @param {unknown} [exception]
+   */
   error: (isEnabled, message, exception = null) => {
     if (!isEnabled) return;
     console.error(`${PREFIX} ${message}:\n${exception}`);
