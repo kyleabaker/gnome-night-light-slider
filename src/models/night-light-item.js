@@ -51,7 +51,14 @@ export const NightLightItem = GObject.registerClass(
 
       // Store signal handler IDs for proper disconnection
       /** @type {number[]} */
-      this._connections = [];
+      this._settingsConnections = [];
+      /** @type {number|null} */
+      this._sliderConnection = null;
+
+      /** @type {boolean} */
+      this._syncing = false;
+      /** @type {number|null} */
+      this._lastTemperature = null;
 
       // Initialize GSettings for color schema
       /** @type {Gio.Settings} */
@@ -61,22 +68,23 @@ export const NightLightItem = GObject.registerClass(
       this._updateVisibility();
 
       // Connect to changes in the 'night-light-enabled' setting
-      this._connections.push(
+      this._settingsConnections.push(
         this._settings.connect(`changed::${ENABLE_KEY}`, () =>
           this._updateVisibility()
         )
       );
 
       // Connect to changes in the 'night-light-temperature' setting
-      this._connections.push(
+      this._settingsConnections.push(
         this._settings.connect(`changed::${TEMPERATURE_KEY}`, () =>
           this._sync()
         )
       );
 
       // Connect to slider value changes
-      this._connections.push(
-        this.slider.connect('notify::value', this._onSliderChanged.bind(this))
+      this._sliderConnection = this.slider.connect(
+        'notify::value',
+        this._onSliderChanged.bind(this)
       );
 
       // Set accessible name for the slider
@@ -90,38 +98,63 @@ export const NightLightItem = GObject.registerClass(
      * Update visibility of the slider based on 'night-light-enabled' setting
      */
     _updateVisibility() {
-      const enabled = this._settings.get_boolean(ENABLE_KEY);
-      this.visible = enabled;
+      const enabled = this._settings?.get_boolean(ENABLE_KEY) || false;
+      if (this.visible !== enabled) {
+        this.visible = enabled;
+      }
     }
 
     /**
      * Handler for slider value changes
      */
     _onSliderChanged() {
+      if (this._syncing) return;
+
       const value = this.slider.value;
       const temperature = Temperature.denormalize(value);
-      this._settings.set_uint(TEMPERATURE_KEY, temperature);
+
+      if (this._lastTemperature === temperature) return;
+
+      this._lastTemperature = temperature;
+      this._settings?.set_uint(TEMPERATURE_KEY, temperature);
     }
 
     /**
      * Synchronize slider position with current temperature setting
      */
     _sync() {
-      const temperature = this._settings.get_uint(TEMPERATURE_KEY);
+      const temperature = this._settings?.get_uint(TEMPERATURE_KEY);
+
+      if (!temperature || this._lastTemperature === temperature) return;
+
+      this._lastTemperature = temperature;
       const value = Temperature.normalize(temperature);
-      this.slider.value = value;
+
+      if (Math.abs(this.slider.value - value) > 0.0001) {
+        this._syncing = true;
+        try {
+          this.slider.value = value;
+        } finally {
+          this._syncing = false;
+        }
+      }
     }
 
     /**
      * Disconnect all signal handlers and destroy the slider
      */
     destroy() {
-      this._connections?.forEach((id) => {
+      if (this._sliderConnection) {
+        this.slider.disconnect(this._sliderConnection);
+        this._sliderConnection = null;
+      }
+
+      this._settingsConnections?.forEach((id) => {
         if (id) {
-          this._settings.disconnect(id);
+          this._settings?.disconnect(id);
         }
       });
-      this._connections = [];
+      this._settingsConnections = [];
       super.destroy();
     }
   }
