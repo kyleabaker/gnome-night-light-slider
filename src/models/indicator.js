@@ -86,8 +86,9 @@ export const Indicator = GObject.registerClass(
         menuContainer = quickSettings.menu.box;
         // Find volume again within the correct menuBox if the first attempt failed
         /** @type {Clutter.Actor[]} */
-        let children = menuContainer.get_children();
-        volumeIndex = children.indexOf(quickSettings._volume?.container);
+        const children = menuContainer.get_children();
+        const volumeContainer = quickSettings._volume?.container;
+        volumeIndex = volumeContainer ? children.indexOf(volumeContainer) : -1;
       }
 
       // Try getting index from Quick Settings menu grid
@@ -98,7 +99,7 @@ export const Indicator = GObject.registerClass(
         );
         menuContainer = quickSettings.menu._grid;
         /** @type {Clutter.Actor[]} */
-        let children = menuContainer.get_children();
+        const children = menuContainer.get_children();
         // Try locating Volume index in another way
         volumeIndex = children.findIndex((c) =>
           c.constructor.name.includes('OutputStreamSlider')
@@ -119,7 +120,7 @@ export const Indicator = GObject.registerClass(
         /** @type {number} */
         const colSpan = 2;
         quickSettings.addExternalIndicator(this, colSpan);
-      } else {
+      } else if (menuContainer) {
         // Insert after volume, or at index 1 (usually after brightness) as a fallback
         menuContainer.insert_child_at_index(item, volumeIndex + 1);
         menuContainer.layout_manager.child_set_property(
@@ -127,6 +128,12 @@ export const Indicator = GObject.registerClass(
           menuContainer.get_children()[volumeIndex + 1],
           'column-span',
           2
+        );
+      } else {
+        // Unable to insert the slider anywhere
+        logger.error(
+          this.ENABLE_LOGGING,
+          'Unable to insert Night Light Slider'
         );
       }
     }
