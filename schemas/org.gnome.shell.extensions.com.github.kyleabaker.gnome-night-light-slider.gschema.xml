@@ -9,5 +9,43 @@
       <summary>Enable Logging</summary>
       <description>Enable logging for debugging.</description>
     </key>
+    <key type="b" name="invert-slider">
+      <default>false</default>
+      <summary>Invert Slider Direction</summary>
+      <description>
+        Invert slider behavior so sliding right increases redshift.
+      </description>
+    </key>
+    <key type="s" name="status-automatic-active">
+      <default>'Turns off at sunrise (in {time})'</default>
+      <summary>Automatic Active Status Template</summary>
+      <description>
+        Template string displayed when night light is active in automatic mode.
+      </description>
+    </key>
+    <key type="s" name="status-automatic-inactive">
+      <default>'Turns on at sunset (in {time})'</default>
+      <summary>Automatic Inactive Status Template</summary>
+      <description>
+        Template string displayed when night light is inactive in automatic
+        mode.
+      </description>
+    </key>
+    <key type="s" name="status-custom-active">
+      <default>'Turns off in {time}'</default>
+      <summary>Custom Active Status Template</summary>
+      <description>
+        Template string displayed when night light is active in custom schedule
+        mode.
+      </description>
+    </key>
+    <key type="s" name="status-custom-inactive">
+      <default>'Turns on in {time}'</default>
+      <summary>Custom Inactive Status Template</summary>
+      <description>
+        Template string displayed when night light is inactive in custom
+        schedule mode.
+      </description>
+    </key>
   </schema>
 </schemalist>

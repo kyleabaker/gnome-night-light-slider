@@ -1,7 +1,7 @@
 /*
  * GNOME Night Light Slider for GNOME Shell
  *
- * Copyright (C) 2025
+ * Copyright (C) 2026
  *     Kyle Baker <https://github.com/kyleabaker/gnome-night-light-slider>
  *
  * This file is part of the gnome-shell extension gnome-night-light-slider.
@@ -24,8 +24,9 @@
 'use strict';
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-import { Indicator } from './src/models/indicator.js';
+import { NlsSystemIndicator } from './src/models/nlsSystemIndicator.js';
 import { logger } from './src/utils/logger.js';
 
 /** @typedef {import('gi://St')} St */
@@ -51,27 +52,72 @@ export default class NightLightSliderGnomeExtension extends Extension {
    */
   constructor(metadata) {
     super(metadata);
-    /** @type {InstanceType<typeof Indicator>|null} */
+    /** @type {InstanceType<typeof NlsSystemIndicator>|null} */
     this._indicator = null;
-    /** @type {boolean} */
-    this.ENABLE_LOGGING = true; //TODO pull from settings instead of static
+    /** @type {number[]} */
+    this._settingsHandlers = [];
   }
 
   /**
-   * Enable the extension
+   * Enable the extension and register Quick Settings external indicator.
    */
   enable() {
-    logger.debug(this.ENABLE_LOGGING, 'Extension enabled');
-    if (!this._indicator) {
-      this._indicator = new Indicator();
+    this._settings = this.getSettings();
+
+    // Set initial logging state
+    logger.setEnabled(this._settings.get_boolean('enable-logging'));
+
+    // Keep logging synced in real-time
+    this._settingsHandlers.push(
+      this._settings.connect('changed::enable-logging', () => {
+        logger.setEnabled(
+          this._settings?.get_boolean('enable-logging') || false
+        );
+      })
+    );
+
+    // Refresh status indicator when template preferences change
+    const templateKeys = [
+      'status-automatic-active',
+      'status-automatic-inactive',
+      'status-custom-active',
+      'status-custom-inactive',
+    ];
+
+    for (const key of templateKeys) {
+      this._settingsHandlers.push(
+        this._settings.connect(`changed::${key}`, () => {
+          if (
+            this._indicator &&
+            typeof this._indicator.updateStatus === 'function'
+          ) {
+            this._indicator.updateStatus();
+          }
+        })
+      );
+    }
+
+    logger.debug('Extension enabled');
+    if (!this._indicator && Main.panel.statusArea.quickSettings) {
+      this._indicator = new NlsSystemIndicator(this);
+      Main.panel.statusArea.quickSettings.addExternalIndicator(this._indicator);
     }
   }
 
   /**
-   * Disable the extension
+   * Disable the extension and clean up UI indicator references.
    */
   disable() {
-    logger.debug(this.ENABLE_LOGGING, 'Extension disabled');
+    logger.debug('Extension disabled');
+
+    if (this._settings && this._settingsHandlers.length > 0) {
+      for (const handlerId of this._settingsHandlers) {
+        this._settings.disconnect(handlerId);
+      }
+      this._settingsHandlers = [];
+    }
+    this._settings = null;
+
     if (this._indicator) {
       this._indicator.destroy();
       this._indicator = null;

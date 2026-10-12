@@ -5,12 +5,13 @@
 [![Latest Release](https://img.shields.io/github/v/release/kyleabaker/gnome-night-light-slider)](https://github.com/kyleabaker/gnome-night-light-slider/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-**Night Light Slider** is a GNOME extension that adds a slider to the quick settings panel, allowing you to easily adjust the color temperature of Night Light mode without diving into the Settings app.
+**Night Light Slider** is a modern GNOME extension that adds an interactive temperature slider, gradient bar, dynamic scheduling status, and temporary pause controls directly to your Quick Settings panel. Adjust your Night Light color temperature effortlessly without opening the Settings app.
 
-[<img src="assets/screenshot-menu.png">](https://www.kyleabaker.com/goodies/linux/gnome-night-light-slider-for-gnome-shell/)
-[<img src="assets/screenshot.png" width="100%">](https://www.kyleabaker.com/goodies/linux/gnome-night-light-slider-for-gnome-shell/)
+[<img src="assets/screenshot-01.png" width="300px">](assets/screenshot-01.png)
+[<img src="assets/screenshot-02.png" width="300px">](assets/screenshot-02.png)
+[<img src="assets/screenshot-03.png" width="100%">](assets/screenshot-03.png)
 
-### Quick Install (One-Liner)
+## Quick Install (One-Liner)
 
 If you have `curl` and `jq` installed, you can install the latest release directly without cloning the repository:
 
@@ -22,24 +23,19 @@ curl -s https://api.github.com/repos/kyleabaker/gnome-night-light-slider/release
 && rm extension.zip
 ```
 
-> **Note:** After running this, you must **restart GNOME Shell** (Alt+F2, type `r`, Enter) or log out/in for the extension to appear in your list. Then, enable it via the "Extensions" app.
+> **Note:** After running this, restart GNOME Shell (`Alt` + `F2`, type `r`, and press `Enter` on Xorg, or log out and back in on Wayland) for the extension to appear. Enable it via the **Extensions** app or command line.
 
-### Contributions
-
-Got ideas, suggestions, or found a bug?  
-[Open an issue on GitHub](https://github.com/kyleabaker/night-light-slider/issues) or submit a **pull request**.
-
-### Build from Source
+## Build from Source
 
 To build and install this extension from source, ensure you have the standard build utilities and GNOME development tools installed.
 
-#### 1. Install Build Tools
+### 1. Install Build Tools
 
 - **Ubuntu/Debian:** `sudo apt install build-essential libglib2.0-bin zip jq npm`
-- **Fedora:** `sudo dnf install make gcc glib2 zip jq npm`
+- **Fedora:** `sudo dnf make gcc glib2 zip jq npm`
 - **Arch:** `sudo pacman -S base-devel glib2 zip jq npm`
 
-#### 2. Compilation & Installation
+### 2. Compilation & Installation
 
 Run these commands from the project root directory:
 
@@ -52,7 +48,7 @@ Run these commands from the project root directory:
   make -f tools/Makefile install
   ```
 
-#### 3. Activate the Extension
+### 3. Activate the Extension
 
 GNOME requires a session refresh to detect new local extensions:
 
@@ -100,10 +96,15 @@ git push origin main --tags
 
 ## Troubleshooting
 
-In case of update error please restart GNOME Shell via:
+If updates do not immediately take effect or if settings fail to load, restart GNOME Shell:
 
 - **Xorg:** Press `Alt` + `F2`, type `r`, and press `Enter`.
 - **Wayland:** Log out and log back in.
+
+## Contributions
+
+Got ideas, suggestions, or found a bug?  
+[Open an issue on GitHub](https://github.com/kyleabaker/gnome-night-light-slider/issues) or submit a pull request.
 
 ## License
 
