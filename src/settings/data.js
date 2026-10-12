@@ -1,7 +1,7 @@
 /*
  * GNOME Night Light Slider for GNOME Shell
  *
- * Copyright (C) 2025
+ * Copyright (C) 2026
  *     Kyle Baker <https://github.com/kyleabaker/gnome-night-light-slider>
  *
  * This file is part of the gnome-shell extension gnome-night-light-slider.
@@ -41,7 +41,18 @@ import Gio from 'gi://Gio'; // eslint-disable-line no-unused-vars
  */
 export function createSettingsData(settings) {
   /** @type {[string, string][]} */
-  const booleanKeys = [['ENABLE_LOGGING', 'enable-logging']];
+  const booleanKeys = [
+    ['ENABLE_LOGGING', 'enable-logging'],
+    ['INVERT_SLIDER', 'invert-slider'],
+  ];
+
+  /** @type {[string, string][]} */
+  const stringKeys = [
+    ['STATUS_AUTOMATIC_ACTIVE', 'status-automatic-active'],
+    ['STATUS_AUTOMATIC_INACTIVE', 'status-automatic-inactive'],
+    ['STATUS_CUSTOM_ACTIVE', 'status-custom-active'],
+    ['STATUS_CUSTOM_INACTIVE', 'status-custom-inactive'],
+  ];
 
   /** @type {SettingsData} */
   const data = {};
@@ -50,6 +61,13 @@ export function createSettingsData(settings) {
     data[prop] = {
       get: () => settings.get_boolean(key),
       set: (v) => settings.set_boolean(key, v),
+    };
+  }
+
+  for (const [prop, key] of stringKeys) {
+    data[prop] = {
+      get: () => settings.get_string(key),
+      set: (v) => settings.set_string(key, v),
     };
   }
 
