@@ -27,7 +27,7 @@ GNOME_EXTENSIONS := gnome-extensions
 METADATA := metadata.json
 DIST_DIR := ./dist
 SCHEMAS_DIR := schemas
-DIST_FILES := assets schemas src extension.js LICENSE metadata.json prefs.js README.md
+DIST_FILES := assets schemas src extension.js LICENSE metadata.json prefs.js README.md stylesheet.css
 
 # Colors for logging
 BLUE := \033[1;34m

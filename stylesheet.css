@@ -1,0 +1,54 @@
+/* Theme Accent Provider */
+.night-light-accent-provider {
+  background-color: -st-accent-color;
+}
+
+/* Pause Buttons, Unchecked */
+.nls-pause-btn {
+  font-size: 0.75em;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background-color: rgba(128, 128, 128, 0.15);
+}
+.nls-pause-btn:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+/* Pause Buttons, Checked */
+.nls-pause-btn:checked {
+  background-color: -st-accent-color;
+  color: -st-accent-fg-color;
+}
+.nls-pause-btn:checked:hover {
+  background-color: st-darken(-st-accent-color, 5%);
+}
+.nls-pause-btn:checked:active {
+  background-color: st-darken(-st-accent-color, 10%);
+}
+.nls-pause-btn:checked:focus {
+  box-shadow: inset 0 0 0 2px st-darken(-st-accent-color, 15%);
+}
+
+/* Status Label */
+.nls-status-lbl {
+  font-style: italic;
+  opacity: 0.5;
+  font-size: 0.8em;
+  padding: 4px 16px 2px 16px;
+}
+
+/* Pause Header Label */
+.nls-pause-header-lbl {
+  font-size: 0.75em;
+  font-weight: normal;
+  opacity: 0.5;
+  padding: 12px 16px 12px 16px;
+}
+
+/* Pause Countdown Label */
+.nls-pause-countdown-lbl {
+  font-style: italic;
+  opacity: 0.5;
+  font-size: 0.75em;
+  padding: 2px 16px 8px 16px;
+}

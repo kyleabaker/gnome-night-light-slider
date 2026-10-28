@@ -1,7 +1,7 @@
 /*
  * GNOME Night Light Slider for GNOME Shell
  *
- * Copyright (C) 2025
+ * Copyright (C) 2026
  *     Kyle Baker <https://github.com/kyleabaker/gnome-night-light-slider>
  *
  * This file is part of the gnome-shell extension gnome-night-light-slider.
@@ -28,7 +28,7 @@
 /** @typedef {import('gi://Shell')} Shell */
 
 /**
- * Utility class for temperature normalization and denormalization
+ * Utility class for temperature normalization and denormalization supporting slider inversion.
  */
 export class Temperature {
   /** @type {number} */
@@ -42,25 +42,23 @@ export class Temperature {
    * Normalize temperature to a value between 0 and 1
    *
    * @param {number} temp
+   * @param {boolean} [inverted=false]
    * @returns {number}
    */
-  static normalize(temp) {
-    //TODO add settings to invert slider behavior
-    // return 1 - (temp - this.MIN_TEMP) / (this.MAX_TEMP - this.MIN_TEMP);
-    return (temp - this.MIN_TEMP) / this.TEMP_RANGE;
+  static normalize(temp, inverted = false) {
+    const ratio = (temp - this.MIN_TEMP) / this.TEMP_RANGE;
+    return inverted ? ratio : 1 - ratio;
   }
 
   /**
    * Denormalize value between 0 and 1 to actual temperature
    *
    * @param {number} value
+   * @param {boolean} [inverted=false]
    * @returns {number}
    */
-  static denormalize(value) {
-    //TODO add settings to invert slider behavior
-    // return Math.round(
-    //   (1 - value) * (this.MAX_TEMP - this.MIN_TEMP) + this.MIN_TEMP
-    // );
-    return Math.round(value * this.TEMP_RANGE + this.MIN_TEMP);
+  static denormalize(value, inverted = false) {
+    const val = inverted ? value : 1 - value;
+    return Math.round(val * this.TEMP_RANGE + this.MIN_TEMP);
   }
 }
